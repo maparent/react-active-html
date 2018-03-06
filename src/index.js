@@ -6,6 +6,12 @@ import adapter from './adapter';
 const debug = process.env.NODE_ENV !== 'production';
 
 let _serializer = null;
+let key = 0;
+
+function getKey() {
+    key = key + 1;
+    return key;
+}
 
 function getSerializer() {
     if (_serializer === null) {
@@ -15,7 +21,7 @@ function getSerializer() {
     return _serializer;
 }
 
-function htmlTreeToComponents(tree, componentsMap, index = 0) {
+function htmlTreeToComponents(tree, componentsMap) {
 
     return tree.map((item) => {
 
@@ -24,7 +30,7 @@ function htmlTreeToComponents(tree, componentsMap, index = 0) {
         }
 
         let componentProps = {
-            key: index
+            key: getKey()
         };
 
 
@@ -34,7 +40,7 @@ function htmlTreeToComponents(tree, componentsMap, index = 0) {
 
         if (typeof item.children !== 'undefined') {
             componentProps = Object.assign(componentProps, {
-                children: htmlTreeToComponents(item.children, componentsMap, ++index)
+                children: htmlTreeToComponents(item.children, componentsMap)
             });
         }
 
