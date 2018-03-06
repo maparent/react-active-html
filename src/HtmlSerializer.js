@@ -45,7 +45,7 @@ export default class HtmlSerializer {
     }
 
     parseHtml(html) {
-        if (typeof html !== 'string' || html == '') {
+        if (! ((typeof html == 'string' && html !== '') || html instanceof Node)) {
             return [];
         }
 
@@ -54,7 +54,10 @@ export default class HtmlSerializer {
             return html;
         }
 
-        let doc = this.parser.parseFromString(html, "text/html");
+        let doc = html;
+        if (!(html instanceof Node)) {
+            doc = this.parser.parseFromString(html, "text/html");
+        }
 
         if (doc.body) {
             doc = doc.body;

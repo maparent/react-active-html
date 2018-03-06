@@ -62,10 +62,10 @@ function htmlTreeToComponents(tree, componentsMap) {
 }
 
 
-export default function (htmlSting, componentsMap = {}, options = {}) {
-    if (typeof htmlSting !== 'string') {
+export default function (html, componentsMap = {}, options = {}) {
+    if (!(typeof html == 'string' || html instanceof Node)) {
         if (debug) {
-            console && console.error("Html should be string, " + (typeof htmlSting) + " was given.");
+            console && console.error("Html should be string or DOM node, " + (typeof html) + " was given.");
             return null;
         }
     }
@@ -74,7 +74,7 @@ export default function (htmlSting, componentsMap = {}, options = {}) {
     let serializer = getSerializer();
     serializer.removeEmptyStrings(removeEmptyStrings);
 
-    const tree = serializer.parseHtml(htmlSting);
+    const tree = serializer.parseHtml(html);
 
     if (typeof tree === 'object' && tree.length > 0) {
         return htmlTreeToComponents(tree, componentsMap);
